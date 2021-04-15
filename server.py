@@ -21,14 +21,16 @@ def handle_client(conn, addr):
     while connected:
         #determining message length
         msg_length = conn.recv(HEADER).decode(FORMAT)
-        msg_length = int(msg_length)
+        if msg_length:
+            msg_length = int(msg_length)
 
-        msg = conn.recv(msg_length).decode(FORMAT)
-        print(addr," said: ",msg)
+            msg = conn.recv(msg_length).decode(FORMAT)
+            print(addr," said: ",msg)
 
-        #handling disconnection cleanly
-        if msg==DISCONNECT_MESSAGE:
-            connected = False
+            #handling disconnection cleanly
+            if msg==DISCONNECT_MESSAGE:
+                connected = False
+            conn.send("Msg Received".encode(FORMAT))
 
 
 def start():
